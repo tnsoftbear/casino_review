@@ -1,0 +1,37 @@
+<?php
+return [
+    ["Alderney", "Alderney Gambling Control Commission", "AGCC", "https://www.gamblingcontrol.org"],
+    ["Armenia", "Armenia Ministry of Finance", "MinFin", "https://minfin.am/en"],
+    ["Austria", "Austrian Ministry of Finance", "BMF", "https://www.bmf.gv.at/public.html"],
+    ["Belarus", "Belarus Ministry of Taxes and Duties", "Nalog", "http://www.nalog.gov.by/en"],
+    ["Belgium", "Belgian Gaming Commission", "Gaming Commission", "https://www.gamingcommission.be/opencms/opencms/jhksweb_en/home"],
+    ["Bulgaria", "Bulgarian National Revenue Agency", "NRA", "https://nra.bg"],
+    ["Croatia", "Croatia Ministry of Finance", "MFIN", "https://mfin.gov.hr/en"],
+    ["Cyprus", "Cyprus Gaming Supervision", "CGC", "https://www.cgc.org.cy"],
+    ["Denmark", "Danish Gambling Authority", "Spillemyndigheden", "https://www.spillemyndigheden.dk/en"],
+    ["Estonia", "Estonian Tax and Customs Board", "EMTA", "https://www.emta.ee/eng"],
+    ["Finland", "Finland Ministry of Interior", "InterMin", "https://intermin.fi/en/police/gambling"],
+    ["France", "France Gambling Authority", "ANJ", "https://anj.fr/english"],
+    ["Germany", "Germany Minister of Interior, Building and Community", "BMI", "https://www.bmi.bund.de/EN/topics/sport/sport-node.html"],
+    ["Gibraltar", "Gibraltar Regulatory Authority", "GRA", "https://www.gra.gi"],
+    ["Greece", "Hellenic Gaming Commission", "HGC", "https://www.gamingcommission.gov.gr/index.php/en"],
+    ["Hungary", "Hungarian Gambling Supervisory Authority", "GSA/SZF", "https://szf.gov.hu"],
+    ["Ireland", "Irish Department of Justice", "DOJ", "http://www.justice.ie"],
+    ["Isle of Man", "Isle of Man Gambling Supervision Commission", "GSC", "https://www.gov.im/categories/business-and-industries/gambling-and-e-gaming"],
+    ["Italy", "Italy Administration of State Monopolies", "ADM", "https://www.adm.gov.it/portale/it/web/guest/home"],
+    ["Jersey", "Jersey Gambling Commission", "JGC", "https://www.jgc.je"],
+    ["Latvia", "Latvia Lotteries and Gambling Supervisory", "IAUI", "https://www.iaui.gov.lv/en"],
+    ["Lithuania", "Lithuania Gaming Control Authority", "LPT", "https://lpt.lrv.lt/en"],
+    ["Malta", "Malta Gaming Authority", "MGA", "https://www.mga.org.mt"],
+    ["Moldova", "Moldova Public Service Agency", "ASP", "http://www.asp.gov.md"],
+    ["The Netherlands", "Netherlands Gaming Authority", "Kansspelautoriteit", "https://kansspelautoriteit.nl"],
+    ["Norway", "Norwegian Gambling Authority", "Lottstift", "https://lottstift.no/en"],
+    ["Portugal", "Portugal Gambling Inspection and Regulation Service", "SRIJ", "https://www.srij.turismodeportugal.pt/en"],
+    ["Romania", "Romania National Gambling Office", "ONJN", "http://onjn.gov.ro"],
+    ["Serbia", "Serbia Ministry of Finance - Gaming Administration", "UIS", "https://uis.gov.rs/index_eng.php?&amp;lng=eng"],
+    ["Spain", "Spanish Directorate-General for Regulation of Gambling", "DGOJ", "https://www.ordenacionjuego.es"],
+    ["Sweden", "Swedish Gambling Authority", "Spelinspektionen", "https://www.spelinspektionen.se"],
+    ["United Kingdom", "United Kingdom Gambling Commission", "UKGC", "http://www.gamblingcommission.gov.uk"]
+];
+
+// https://itechlabs.com/jurisdictions/
