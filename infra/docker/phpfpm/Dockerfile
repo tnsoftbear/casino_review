@@ -26,9 +26,6 @@ RUN apt-get update && \
         # for mbstring
         libonig-dev && \
         # Setup locales
-        # sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-        # dpkg-reconfigure --frontend=noninteractive locales && \
-        # update-locale LANG=en_US.UTF-8 && \
         locale-gen en_US.UTF-8 && \
         localedef -f UTF-8 -i en_US en_US.UTF-8 && \
         # Configure PHP extensions
@@ -38,12 +35,13 @@ RUN apt-get update && \
             gd \
             mbstring
 
+# --------------- development ------------------
+
 FROM base AS development
 
-#COPY ./php-fpm.d/* /usr/local/etc/php-fpm.d/
+COPY ./infra/docker/phpfpm/php.development.ini /usr/local/etc/php/php.ini
 
-#COPY ./conf.d/* /usr/local/etc/php/conf.d/
-COPY ./php.development.ini /usr/local/etc/php/php.ini
+# ------------ development-xdebug --------------
 
 FROM development AS development-xdebug
 
@@ -52,4 +50,20 @@ RUN <<EOF
   docker-php-ext-enable xdebug
 EOF
 
-COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./infra/docker/phpfpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+# ------------------ deploy --------------------
+
+FROM base AS deploy
+
+COPY ./infra/docker/phpfpm/php.deploy.ini /usr/local/etc/php/php.ini
+COPY ./workspace /workspace
+
+RUN <<EOF
+  composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist
+  chmod -R 777 storage bootstrap/cache
+  php artisan optimize:clear
+  php artisan optimize
+  apt-get clean
+  rm -rf /var/lib/apt/lists/*
+EOF
