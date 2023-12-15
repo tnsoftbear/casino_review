@@ -1,0 +1,53 @@
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/workspace"
+    schedule:
+      interval: "dayly"
+      #interval: "weekly"
+      #day: "sunday"
+      time: "23:00"
+      timezone: "Europe/Riga"
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    assignees:
+      - "tnsoftbear"
+    reviewers:
+      - "tnsoftbear"
+    commit-message:
+      prefix: "app/composer: "
+    labels:
+      - "composer"
+      - "dependencies"
+  - package-ecosystem: "docker"
+    directory: "/infra/docker"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "16:00"
+      timezone: "Europe/Riga"
+    assignees:
+      - "tnsoftbear"
+    commit-message:
+      prefix: "infra/docker: "
+    labels:
+      - "docker"
+      - "dependencies"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "16:00"
+      timezone: "Europe/Riga"
+    commit-message:
+      prefix: "infra/github-action: "
+    labels:
+      - "github-action"
+      - "dependencies"
