@@ -33,6 +33,8 @@ web:
 	docker compose $(cf) exec web bash
 app:
 	docker compose $(cf) exec app bash
+db:
+	docker compose $(cf) exec db bash
 #fresh:
 #	docker compose $(cf) exec app php artisan migrate:fresh --seed
 
