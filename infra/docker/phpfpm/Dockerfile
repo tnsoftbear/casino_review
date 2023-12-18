@@ -13,7 +13,8 @@ ENV TZ=UTC \
 
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-RUN apt-get update && \
+RUN mkdir -p ${COMPOSER_HOME} && \
+    apt-get update && \
     apt-get install --no-install-recommends -y \
         locales \
         vim \
@@ -41,9 +42,15 @@ FROM base AS development
 
 COPY ./infra/docker/phpfpm/php.development.ini /usr/local/etc/php/php.ini
 
+RUN chown -R www-data:www-data /workspace ${COMPOSER_HOME}
+
+USER www-data
+
 # ------------ development-xdebug --------------
 
 FROM development AS development-xdebug
+
+USER root
 
 RUN <<EOF
   pecl install xdebug
@@ -52,11 +59,14 @@ EOF
 
 COPY ./infra/docker/phpfpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
+USER www-data
+
 # ------------------ deploy --------------------
 
 FROM base AS deploy
 
 COPY ./infra/docker/phpfpm/php.deploy.ini /usr/local/etc/php/php.ini
+
 COPY ./workspace /workspace
 
 RUN <<EOF
@@ -67,3 +77,13 @@ RUN <<EOF
   apt-get clean
   rm -rf /var/lib/apt/lists/*
 EOF
+
+RUN chown -R www-data:www-data /workspace ${COMPOSER_HOME}
+
+USER www-data
+
+# ----- Notes -----
+# COMPOSER_HOME and related actions possibly are not needed and can be removed
+#
+# For build in deploy mode:
+# APP_BUILD_TARGET=deploy make remake

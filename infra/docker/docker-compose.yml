@@ -20,6 +20,7 @@ services:
       context: ./../..
       dockerfile: ./infra/docker/phpfpm/Dockerfile
       target: ${APP_BUILD_TARGET:-development-xdebug}
+      # target: development-xdebug
     depends_on:
       - db
     networks:

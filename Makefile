@@ -1,13 +1,14 @@
 cf = -f infra/docker/docker-compose.yml
+uf = -u www-data
 
 install:
 	@make build
 	@make up
-#	docker compose $(cf) exec app composer install
-	docker compose $(cf) exec app cp .env.example .env
-	docker compose $(cf) exec app php artisan key:generate
-	docker compose $(cf) exec app php artisan storage:link
-	docker compose $(cf) exec app chmod -R 777 storage bootstrap/cache
+#	docker compose $(cf) exec $(uf) app composer install
+	docker compose $(cf) exec $(uf) app cp .env.example .env
+	docker compose $(cf) exec $(uf) app php artisan key:generate
+	docker compose $(cf) exec $(uf) app php artisan storage:link
+	docker compose $(cf) exec $(uf) app chmod -R 777 storage bootstrap/cache
 #	@make fresh
 build:
 	docker compose $(cf) build
@@ -30,12 +31,12 @@ remake:
 ps:
 	docker compose $(cf) ps
 web:
-	docker compose $(cf) exec web bash
+	docker compose $(cf) exec $(uf) web bash
 app:
-	docker compose $(cf) exec app bash
+	docker compose $(cf) exec $(uf) app bash
 db:
-	docker compose $(cf) exec db bash
+	docker compose $(cf) exec $(uf) db bash
 #fresh:
-#	docker compose $(cf) exec app php artisan migrate:fresh --seed
+#	docker compose $(cf) exec $(uf) app php artisan migrate:fresh --seed
 
 # https://github.com/ucan-lab/docker-laravel/blob/main/Makefile
