@@ -18,23 +18,15 @@ services:
   app:
     build:
       context: ./../..
-      dockerfile: ./infra/docker/phpfpm/Dockerfile
-      target: ${APP_BUILD_TARGET:-development-xdebug}
-      # target: development-xdebug
+      dockerfile: ./infra/docker/phpfpm/Dockerfile.deploy
+      target: deploy
     depends_on:
       - db
     networks:
       - casino-review-network
     restart: always
-    volumes:
-      - type: bind
-        source: ./../../workspace
-        target: /workspace
 
   db:
-    # build:
-    #   context: ./../..
-    #   dockerfile: ./infra/docker/psql/Dockerfile
     image: 'postgres:latest'
     ports:
       - 5432:5432
@@ -48,8 +40,5 @@ services:
         target: /var/lib/postgresql/data
         volume:
           nocopy: true
-      # In this example, we share an init.sql script with the container
-      # The init script will be executed when the database is first run
-      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   db-data:

@@ -7,5 +7,3 @@ RUN apt-get update && \
 COPY ./cert/* /etc/nginx/cert/
 COPY ./nginx/* /etc/nginx/
 COPY ./conf.d/* /etc/nginx/conf.d/
-
-WORKDIR /workspace

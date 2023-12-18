@@ -1,0 +1,48 @@
+version: '3'
+
+networks:
+  casino-review-network:
+    driver: bridge
+
+services:
+  web:
+    build: ./web
+    depends_on:
+      - app
+    networks:
+      - casino-review-network
+    ports:
+      - '80:80'
+      - 443:443
+
+  app:
+    build:
+      context: ./../..
+      dockerfile: ./infra/docker/phpfpm/Dockerfile.dev
+      target: ${APP_BUILD_TARGET:-dev-xdebug}
+    depends_on:
+      - db
+    networks:
+      - casino-review-network
+    restart: always
+    volumes:
+      - type: bind
+        source: ./../../workspace
+        target: /workspace
+
+  db:
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123123}
+      POSTGRES_DB: ${POSTGRES_DB:-casino_review}
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+volumes:
+  db-data:
