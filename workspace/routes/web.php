@@ -2,17 +2,27 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CasinoController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/article/{slug?}', [ArticleController::class, 'index']);
+Route::get('/casino', [CasinoController::class, 'list']);
+
+Route::redirect('/admin/article', '/admin/article/list', 301);
+Route::get('/admin/article/list', [AdminArticleController::class, 'list']);
+
+// Route::get('/article/{slug?}', function (string $slug = "") {
+//    if (is_numeric($slug)) {
+//        return "Article id: $slug";
+//    }
+//    return "Article slug: $slug"; 
+// })->where(['slug' => '[A-Za-z0-9]+']);
+
+Route::fallback(function () {
+    abort(404, 'Oops, page not found.');
 });
