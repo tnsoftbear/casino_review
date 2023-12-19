@@ -1,15 +1,24 @@
 # Run "deploy" target commands with "www-data" user
-# Example for "deploy" target:
-# APP_BUILD_TARGET=deploy make remake
-# Example for "dev" target:
+# Examples:
+# make remake user=manjaro
 # make remake
-# APP_BUILD_TARGET= make remake
 ifeq ($(APP_BUILD_TARGET),deploy)
 	cf = -f infra/docker/docker-compose-deploy.yml
-	uf = -u www-data
+	ifeq ($(user),)
+		uf = -u www-data
+#		ba = --build-arg user=www-data
+	else
+		uf = -u $(user)
+#		ba = --build-arg user=$(user)
+	endif
 else
 	cf = -f infra/docker/docker-compose-dev.yml
-	uf =
+	ifeq ($(user),)
+		uf =
+	else
+		uf = -u $(user)
+#		ba = --build-arg user=$(user)
+	endif
 endif
 
 install:

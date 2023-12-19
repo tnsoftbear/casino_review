@@ -1,24 +1,21 @@
 # Run "deploy" target commands with "www-data" user
-# Examples:
-# make remake user=manjaro
+# Example for "deploy" target:
+# APP_BUILD_TARGET=deploy make remake
+# Example for "dev" target:
 # make remake
+# APP_BUILD_TARGET= make remake
 ifeq ($(APP_BUILD_TARGET),deploy)
 	cf = -f infra/docker/docker-compose-deploy.yml
-	ifeq ($(user),)
-		uf = -u www-data
-#		ba = --build-arg user=www-data
-	else
-		uf = -u $(user)
-#		ba = --build-arg user=$(user)
-	endif
+	uf = -u www-data
 else
 	cf = -f infra/docker/docker-compose-dev.yml
-	ifeq ($(user),)
-		uf =
-	else
-		uf = -u $(user)
-#		ba = --build-arg user=$(user)
-	endif
+	uf =
+endif
+
+ifeq ($(nocache),1)
+	nc = --no-cache
+else
+	nc =
 endif
 
 install:
@@ -31,8 +28,7 @@ install:
 	docker compose $(cf) exec $(uf) app chmod -R 777 storage bootstrap/cache
 #	@make fresh
 build:
-#	docker compose $(cf) build
-	docker compose $(cf) build --no-cache
+	docker compose $(cf) build $(nc)
 up:
 	docker compose $(cf) up -d
 stop:
