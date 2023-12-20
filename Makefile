@@ -28,7 +28,7 @@ install:
 	docker compose $(cf) exec $(uf) app chmod -R 777 storage bootstrap/cache
 #	@make fresh
 build:
-	docker compose $(cf) build $(nc)
+	docker compose $(cf) --parallel 1 build $(nc)
 up:
 	docker compose $(cf) up -d
 stop:

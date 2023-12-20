@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-bullseye AS casino-review-base
+FROM php:8.3-fpm-bullseye AS base
 
 WORKDIR /workspace
 
@@ -38,3 +38,41 @@ RUN mkdir -p ${COMPOSER_HOME} && \
         docker-php-ext-install -j$(nproc) \
             gd \
             mbstring
+
+# ------------ development --------------
+
+FROM base AS dev
+
+COPY ./infra/docker/phpfpm/php.dev.ini /usr/local/etc/php/php.ini
+
+# ------------ development-xdebug --------------
+
+FROM dev AS dev-xdebug
+
+RUN <<EOF
+  pecl install xdebug
+  docker-php-ext-enable xdebug
+EOF
+
+COPY ./infra/docker/phpfpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+# ------------ deploy --------------
+
+FROM base AS deploy
+
+COPY ./infra/docker/phpfpm/php.deploy.ini /usr/local/etc/php/php.ini
+
+COPY ./workspace /workspace
+
+RUN <<EOF
+  composer install -q -n --no-ansi --no-dev --no-scripts --no-progress --prefer-dist
+  chmod -R 777 storage bootstrap/cache
+  php artisan optimize:clear
+  php artisan optimize
+  apt-get clean
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+RUN chown -R www-data:www-data /workspace ${COMPOSER_HOME}
+
+USER www-data

@@ -15,18 +15,12 @@ services:
       - '80:80'
       - 443:443
 
-  casino-review-base:
-    build:
-      context: ./../..
-      dockerfile: ./infra/docker/phpfpm/Dockerfile.base
-
   app:
     build:
       context: ./../..
-      dockerfile: ./infra/docker/phpfpm/Dockerfile.deploy
+      dockerfile: ./infra/docker/phpfpm/Dockerfile
     depends_on:
       - db
-      - casino-review-base
     networks:
       - casino-review-network
     restart: always
