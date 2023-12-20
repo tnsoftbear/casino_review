@@ -22,6 +22,7 @@ services:
       target: ${APP_BUILD_TARGET:-dev-xdebug}
     depends_on:
       - db
+    env_file: ./../../.env
     networks:
       - casino-review-network
     restart: always
@@ -31,13 +32,11 @@ services:
         target: /workspace
 
   db:
+    env_file: ./../../.env
     image: 'postgres:latest'
     ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123123}
-      POSTGRES_DB: ${POSTGRES_DB:-casino_review}
+      # - "${POSTGRES_PORT}:5432" # так работает. но не имеет смысла <host_port>:<container_port>
+      - "5432:5432"
     volumes:
       - type: volume
         source: db-data

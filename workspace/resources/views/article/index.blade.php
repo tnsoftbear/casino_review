@@ -8,5 +8,7 @@
 </head>
 <body>
     <h1>Article {{ $slug }}</h>
+        POSTGRES_PORT: {{ getenv('POSTGRES_PORT') }}
+        <pre>{{ print_r($_ENV) }}</pre>
 </body>
 </html>

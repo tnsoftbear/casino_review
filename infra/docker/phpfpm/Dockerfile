@@ -15,29 +15,36 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
 RUN mkdir -p ${COMPOSER_HOME} && \
     apt-get update && \
-    apt-get install --no-install-recommends -y \
-        locales \
-        vim \
-        git \
-        curl \
-        zip \
-        unzip \
-        # for gd
-        zlib1g-dev \
-        libpng-dev \
-        libjpeg-dev \
-        libfreetype6-dev \
-        # for mbstring
-        libonig-dev && \
-        # Setup locales
-        locale-gen en_US.UTF-8 && \
-        localedef -f UTF-8 -i en_US en_US.UTF-8 && \
-        # Configure PHP extensions
-        docker-php-ext-configure gd --with-freetype --with-jpeg && \
-        # Install PHP extensions
-        docker-php-ext-install -j$(nproc) \
-            gd \
-            mbstring
+    apt-get install -y \
+      locales \
+      vim \
+      git \
+      curl \
+      zip \
+      unzip \
+      # for gd
+      zlib1g-dev \
+      libpng-dev \
+      libjpeg-dev \
+      libfreetype6-dev \
+      # for mbstring
+      libonig-dev \
+      # for postgres
+      libpq-dev && \
+    # Setup locales
+    locale-gen en_US.UTF-8 && \
+    localedef -f UTF-8 -i en_US en_US.UTF-8 && \
+    # Configure gd extension
+    docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    # Configure postgres extension
+    docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
+    # Install PHP extensions
+    docker-php-ext-install -j$(nproc) \
+      gd \
+      mbstring \
+      pdo \ 
+      pdo_pgsql \
+      pgsql
 
 # ------------ development --------------
 
