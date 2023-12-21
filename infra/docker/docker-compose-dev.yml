@@ -34,6 +34,8 @@ services:
   db:
     env_file: ./../../.env
     image: 'postgres:latest'
+    networks:
+      - casino-review-network
     ports:
       # - "${POSTGRES_PORT}:5432" # так работает. но не имеет смысла <host_port>:<container_port>
       - "5432:5432"

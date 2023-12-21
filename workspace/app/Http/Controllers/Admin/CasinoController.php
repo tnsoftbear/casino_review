@@ -3,11 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Casino;
 use Illuminate\Http\Request;
 
 class CasinoController extends Controller
 {
     public function __construct(Request $request) {
+        //session()->invalidate();
+        //session()->regenerate();
+        echo "key2: " . session()->get("key2");
+        session()->put("key2", "value2");
+        if ($request->hasSession()) {
+            $request->session()->put("key1", "value1");
+        } else {
+            echo "no session in request";
+        }
         dump($request->route()->getName());
     }
 
@@ -16,7 +26,10 @@ class CasinoController extends Controller
      */
     public function index()
     {
-        return view('admin.casino.index');
+        //dump(session()->all());
+        $casinos = Casino::orderBy('id', 'desc')->get();
+        $pageTitle = 'Casino List';
+        return view('admin.casino.index', compact('casinos', 'pageTitle'));
     }
 
     /**
@@ -24,7 +37,7 @@ class CasinoController extends Controller
      */
     public function create()
     {
-        return view('admin.casino.create');
+        return view('admin.casino.create', ['pageTitle' => 'Create Casino']);
     }
 
     /**
@@ -32,7 +45,12 @@ class CasinoController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $casino = new Casino;
+        $casino->name = $request->name;
+        $casino->site_url = $request->site_url;
+        $casino->description = $request->description;
+        $casino->save();
+        return redirect()->route('casino.index');
     }
 
     /**
@@ -48,7 +66,9 @@ class CasinoController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.casino.edit', ['id' => $id]);
+        $pageTitle = 'Edit Casino';
+        $casino = Casino::find($id);
+        return view('admin.casino.edit', compact('casino', 'pageTitle'));
     }
 
     /**
@@ -56,8 +76,12 @@ class CasinoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        dump($id);
-        dd($request);
+        $casino = Casino::find($id);
+        $casino->name = $request->name;
+        $casino->site_url = $request->site_url;
+        $casino->description = $request->description;
+        $casino->save();
+        return redirect()->route('casino.index');
     }
 
     /**
@@ -65,6 +89,8 @@ class CasinoController extends Controller
      */
     public function destroy(string $id)
     {
-        dump($id);
+        $casino = Casino::find($id);
+        $casino->delete();
+        return redirect()->route('casino.index');
     }
 }

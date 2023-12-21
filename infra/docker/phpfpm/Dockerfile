@@ -50,11 +50,25 @@ RUN mkdir -p ${COMPOSER_HOME} && \
 
 FROM base AS dev
 
+ARG user
+ARG uid=1000
+
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+
+RUN mkdir -p $COMPOSER_HOME && \
+    mkdir -p /home/$user && \
+    chown -R $user:$user /home/$user && \
+    chown -R $user:$user /workspace
+
 COPY ./infra/docker/phpfpm/php.dev.ini /usr/local/etc/php/php.ini
+
+USER $user
 
 # ------------ development-xdebug --------------
 
 FROM dev AS dev-xdebug
+
+USER root
 
 RUN <<EOF
   pecl install xdebug
@@ -62,6 +76,8 @@ RUN <<EOF
 EOF
 
 COPY ./infra/docker/phpfpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+USER $user
 
 # ------------ deploy --------------
 

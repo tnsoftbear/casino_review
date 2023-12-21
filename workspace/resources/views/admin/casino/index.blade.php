@@ -1,24 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List Casinos</title>
-</head>
-<body>
+@extends('admin.layout.default')
+
+@section('content')
+
+<style>
+.casino-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.casino-table th, .casino-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.casino-action {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007BFF;
+}
+
+</style>
+
 <p><a href="{{ route('casino.create') }}">Create Casino</a></p>
-<ul>
-    <li>
-        Casino 1
-        | <a href="{{ route('casino.show', ['id' => 1]) }}">Preview</a>
-        | <a href="{{ route('casino.edit', ['id' => 1]) }}">Edit</a>
-        | <form action="{{ route('casino.destroy', ['id' => 1]) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <input type="submit" value="Delete">
-            </form>
-    </li>
-</ul>
-</body>
-</html>
+<table class="casino-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Site URL</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($casinos as $casino)
+            <tr>
+                <td>
+                    {{ $casino->name }}
+                </td>
+                <td>
+                    <a href="{{ $casino->site_url }}" target="_blank">{{ $casino->site_url }}</a>
+                </td>
+                <td>
+                    <a href="{{ route('casino.show', ['id' => $casino->id]) }}" class="casino-action">Preview</a>
+                    <a href="{{ route('casino.edit', ['id' => $casino->id]) }}" class="casino-action">Edit</a>
+                    @include('admin.casino.delete_button')
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+
+@endsection

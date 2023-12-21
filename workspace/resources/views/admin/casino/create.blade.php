@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create Casino</title>
-</head>
-<body>
+@extends('admin.layout.default')
+
+@section('content')
+
     <form action="{{ route('casino.store') }}" method="POST">
         @csrf
-        <label for="name">Name</label>
-        <input type="text" name="name">
-        <button type="submit">Submit</button>
+        @include('admin.casino.edit_fields')
+    
+        <div>
+            <button type="submit">Submit</button>
+            <button type="button" onclick="window.location='{{ route('casino.index') }}'">Cancel</button>
+        </div>
     </form>
-</body>
-</html>
+
+@endSection
