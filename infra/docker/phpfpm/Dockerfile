@@ -22,6 +22,7 @@ RUN mkdir -p ${COMPOSER_HOME} && \
       curl \
       zip \
       unzip \
+      iputils-ping \
       # for gd
       zlib1g-dev \
       libpng-dev \
@@ -30,6 +31,7 @@ RUN mkdir -p ${COMPOSER_HOME} && \
       # for mbstring
       libonig-dev \
       # for postgres
+      postgresql-client \
       libpq-dev && \
     # Setup locales
     locale-gen en_US.UTF-8 && \
@@ -51,12 +53,11 @@ RUN mkdir -p ${COMPOSER_HOME} && \
 FROM base AS dev
 
 ARG user
-ARG uid=1000
+ARG uid
 
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 
-RUN mkdir -p $COMPOSER_HOME && \
-    mkdir -p /home/$user && \
+RUN mkdir -p /home/$user && \
     chown -R $user:$user /home/$user && \
     chown -R $user:$user /workspace
 

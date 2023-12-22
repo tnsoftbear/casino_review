@@ -14,6 +14,7 @@ services:
     ports:
       - '80:80'
       - 443:443
+    restart: unless-stopped
 
   app:
     build:
@@ -21,11 +22,14 @@ services:
       dockerfile: ./infra/docker/phpfpm/Dockerfile
       target: ${APP_BUILD_TARGET:-dev-xdebug}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     env_file: ./../../.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - casino-review-network
-    restart: always
+    restart: unless-stopped
     volumes:
       - type: bind
         source: ./../../workspace
@@ -33,17 +37,22 @@ services:
 
   db:
     env_file: ./../../.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
     image: 'postgres:latest'
     networks:
       - casino-review-network
     ports:
-      # - "${POSTGRES_PORT}:5432" # так работает. но не имеет смысла <host_port>:<container_port>
       - "5432:5432"
+    restart: unless-stopped
     volumes:
-      - type: volume
-        source: db-data
-        target: /var/lib/postgresql/data
-        volume:
-          nocopy: true
+      - postgres:/var/lib/postgresql/data
+        #target: /home/manjaro/coding/my-repo/casino_review/db-data
+        # volume:
+        #   nocopy: true
+      
 volumes:
-  db-data:
+  postgres:

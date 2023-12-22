@@ -10,7 +10,7 @@
 }
 </style>
 
-<form action="{{ route('casino.destroy', ['id' => $casino->id]) }}" method="POST" class="casino-action-form">
+<form action="{{ route('casino.destroy', ['id' => $id]) }}" method="POST" class="casino-action-form">
     @csrf
     @method('DELETE')
     <input type="submit" value="Delete" class="delete-button" onclick="return confirm('Are you sure you want to delete this casino?')">

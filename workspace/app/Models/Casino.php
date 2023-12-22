@@ -10,4 +10,5 @@ class Casino extends Model
     use HasFactory;
 
     protected $table = 'casino';
+    protected $fillable = ['name', 'rubric_id', 'site_url', 'description'];
 }

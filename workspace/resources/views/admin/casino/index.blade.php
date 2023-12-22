@@ -28,6 +28,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Rubric</th>
             <th>Site URL</th>
             <th>Actions</th>
         </tr>
@@ -39,12 +40,15 @@
                     {{ $casino->name }}
                 </td>
                 <td>
+                    {{ config('casino.rubric')[(int)$casino->rubric_id] }}
+                </td>
+                <td>
                     <a href="{{ $casino->site_url }}" target="_blank">{{ $casino->site_url }}</a>
                 </td>
                 <td>
                     <a href="{{ route('casino.show', ['id' => $casino->id]) }}" class="casino-action">Preview</a>
                     <a href="{{ route('casino.edit', ['id' => $casino->id]) }}" class="casino-action">Edit</a>
-                    @include('admin.casino.delete_button')
+                    @include('admin.casino.delete_button', ['id' => $casino->id])
                 </td>
             </tr>
         @endforeach
