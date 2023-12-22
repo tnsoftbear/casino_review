@@ -2,28 +2,35 @@
 
 @section('content')
 
-<style>
-.action-button {
-    background-color: rgb(38, 70, 251);
-    color: rgb(255, 255, 255);
-    padding: 8px 16px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    width: 80px;
-}
-</style>
-
-    <form action="{{ route('casino.update', ['id' => $id]) }}" method="POST">
+  <div class="container mt-4">
+    <form id="mainForm" action="{{ route('casino.update', ['id' => $id]) }}" method="POST">
         @csrf
         @method('PUT')
+
+        @section('edit_buttons')
+        <div>
+            @include('admin.casino.edit_buttons')
+            <input type="button" class="btn btn-danger" value="Delete" onclick="confirmDelete()">
+        </div>
+        @show
+
         @include('admin.casino.edit_fields')
     
-        <div>
-            <input type="submit" class="action-button" value="Submit">
-            <input type="button" class="action-button" value="Cancel" onclick="window.location='{{ route('casino.index') }}'">
-        </div>
+        @yield('edit_buttons')
     </form>
-    @include('admin.casino.delete_button')
+
+    <form id="deleteForm" action="{{ route('casino.destroy', ['id' => $id]) }}" method="POST" class="casino-action-form">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    <script>
+        function confirmDelete() {
+            if (confirm('Are you sure you want to delete this casino?')) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
+  </div>
 
 @endSection

@@ -42,8 +42,9 @@ class CasinoController extends Controller
         $name = old('name');
         $rubric_id = old('rubric_id');
         $site_url = old('site_url');
+        $action = route('casino.store');
         return view('admin.casino.create', compact(
-            'pageTitle', 'name', 'rubric_id', 'site_url', 'description'));
+            'pageTitle', 'action', 'name', 'rubric_id', 'site_url', 'description'));
     }
     
     /**
@@ -53,6 +54,9 @@ class CasinoController extends Controller
     {
         $validatedData = $request->validate($this->getValidationRules($request));
         Casino::create($validatedData);
+        if ($request->save === 'save_and_new') {
+            return redirect()->route('casino.create');
+        }
         return redirect()->route('casino.index');
     }
 
@@ -87,6 +91,10 @@ class CasinoController extends Controller
         $validatedData = $request->validate($this->getValidationRules($request, (int)$id));
         $casino = Casino::find($id);
         $casino->update($validatedData);
+        if ($request->save === 'save_and_new') {
+            return redirect()->route('casino.create');
+        }
+
         return redirect()->route('casino.index');
     }
 

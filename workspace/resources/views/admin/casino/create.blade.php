@@ -2,14 +2,20 @@
 
 @section('content')
 
-    <form action="{{ route('casino.store') }}" method="POST">
-        @csrf
-        @include('admin.casino.edit_fields')
-    
-        <div>
-            <button type="submit">Submit</button>
-            <button type="button" onclick="window.location='{{ route('casino.index') }}'">Cancel</button>
-        </div>
-    </form>
+<div class="container mt-4">
+  <form action="{{ route('casino.store') }}" method="POST">
+    @csrf
+
+    @section('edit_buttons')
+    <div>
+        @include('admin.casino.edit_buttons')
+    </div>
+    @show
+
+    @include('admin.casino.edit_fields')
+
+    @yield('edit_buttons')
+  </form>
+</div>
 
 @endSection

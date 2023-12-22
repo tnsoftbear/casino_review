@@ -2,58 +2,48 @@
 
 @section('content')
 
-<style>
-.casino-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.casino-table th, .casino-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-
-.casino-action {
-    margin-right: 10px;
-    text-decoration: none;
-    color: #007BFF;
-}
-
-</style>
-
-<p><a href="{{ route('casino.create') }}">Create Casino</a></p>
-<table class="casino-table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Rubric</th>
-            <th>Site URL</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($casinos as $casino)
+<div class="container mt-4">
+    <p><a href="{{ route('casino.create') }}" class="btn btn-primary">Create Casino</a></p>
+    <table class="table casino-table">
+        <thead>
             <tr>
-                <td>
-                    {{ $casino->name }}
-                </td>
-                <td>
-                    {{ config('casino.rubric')[(int)$casino->rubric_id] }}
-                </td>
-                <td>
-                    <a href="{{ $casino->site_url }}" target="_blank">{{ $casino->site_url }}</a>
-                </td>
-                <td>
-                    <a href="{{ route('casino.show', ['id' => $casino->id]) }}" class="casino-action">Preview</a>
-                    <a href="{{ route('casino.edit', ['id' => $casino->id]) }}" class="casino-action">Edit</a>
-                    @include('admin.casino.delete_button', ['id' => $casino->id])
-                </td>
+                <th class="col">Name</th>
+                <th>Rubric</th>
+                <th>Site URL</th>
+                <th class="col-auto">Actions</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($casinos as $casino)
+                <tr>
+                    <td>{{ $casino->name }}</td>
+                    <td>{{ config('casino.rubric')[(int)$casino->rubric_id] }}</td>
+                    <td>
+                        <a href="{{ $casino->site_url }}" target="_blank">{{ $casino->site_url }}</a>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="{{ route('casino.show', ['id' => $casino->id]) }}" class="btn btn-info btn-sm" target="_blank">Preview</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="{{ route('casino.edit', ['id' => $casino->id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                            </div>
+                            <div class="col-md-4">
+                                <form action="{{ route('casino.destroy', ['id' => $casino->id]) }}" method="POST" class="casino-action-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="submit" value="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this casino?')">
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 
 
 @endsection
