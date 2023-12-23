@@ -28,6 +28,7 @@ class CasinoController extends Controller
     {
         //dump(session()->all());
         $casinos = Casino::orderBy('id', 'desc')->get();
+        $action = route('casino.store');
         $pageTitle = 'Casino List';
         return view('admin.casino.index', compact('casinos', 'pageTitle'));
     }
@@ -116,7 +117,7 @@ class CasinoController extends Controller
                 'max:255',
                 $uniqueNameRule
             ],
-            'rubric_id' => Rule::in(array_keys(config('casino.rubric'))),
+            //'rubric_id' => Rule::in(array_keys(config('casino.rubric'))),
             'site_url' => [
                 // 'sometimes', // Правило будет применяться только если поле присутствует во входных данных
                 // 'nullable',  // Разрешаем поле быть null

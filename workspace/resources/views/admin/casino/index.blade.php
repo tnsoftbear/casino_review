@@ -4,11 +4,12 @@
 
 <div class="container mt-4">
     <p><a href="{{ route('casino.create') }}" class="btn btn-primary">Create Casino</a></p>
+    @if (count($casinos) == 0) <p>No casinos found.</p>
+    @else
     <table class="table casino-table">
         <thead>
             <tr>
                 <th class="col">Name</th>
-                <th>Rubric</th>
                 <th>Site URL</th>
                 <th class="col-auto">Actions</th>
             </tr>
@@ -17,7 +18,6 @@
             @foreach ($casinos as $casino)
                 <tr>
                     <td>{{ $casino->name }}</td>
-                    <td>{{ config('casino.rubric')[(int)$casino->rubric_id] }}</td>
                     <td>
                         <a href="{{ $casino->site_url }}" target="_blank">{{ $casino->site_url }}</a>
                     </td>
@@ -42,6 +42,7 @@
             @endforeach
         </tbody>
     </table>
+    @endif
 </div>
 
 

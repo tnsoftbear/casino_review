@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Casino extends Model
+class Article extends Model
 {
     use HasFactory;
 
-    protected $table = 'casino';
-    protected $fillable = ['name', 'site_url', 'description'];
+    protected $table = 'article';
+    protected $guarded = ['id', 'created_at', 'updated_at', 'deleted_at'];
 }

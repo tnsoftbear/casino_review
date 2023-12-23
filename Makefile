@@ -14,9 +14,9 @@ else
 	uf =
 endif
 
-nocache =
+ncf =
 ifeq ($(nocache),1)
-	nocache = --no-cache
+	ncf = --no-cache
 endif
 
 ifeq ($(user),)
@@ -39,7 +39,7 @@ install:
 	docker compose $(cf) exec $(uf) app chmod -R 777 storage bootstrap/cache
 	@make fresh
 build:
-	docker compose $(cf) build $(nocache) $(bauser) $(bauid)
+	docker compose $(cf) build $(ncf) $(bauser) $(bauid)
 rebuild:
 	@make down
 	@make build
