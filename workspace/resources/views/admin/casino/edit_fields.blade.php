@@ -1,6 +1,6 @@
 <div class="mb-3">
     <label for="name" class="form-label">Name</label>
-    <input type="text" name="name" id="name" value="{!! $name !!}" class="form-control" required>
+    <input type="text" name="name" id=content"name" value="{!! $name !!}" class="form-control" required>
     @error('name') <div class="alert alert-danger">{{ $message }}</div> @enderror
 </div>
 

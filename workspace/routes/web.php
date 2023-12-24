@@ -19,7 +19,8 @@ Route::get('/casino', [CasinoController::class, 'list']);
 //Route::redirect('/admin/article', '/admin/article/list', 301);
 //Route::get('/admin/article/list', [AdminArticleController::class, 'list']);
 Route::resource('/admin/casino', AdminCasinoController::class, ['parameters' => ['casino' => 'id']]);
-Route::resource('/admin/article', AdminArticleController::class, ['parameters' => ['article' => 'id']]);
+//Route::resource('/admin/article', AdminArticleController::class, ['parameters' => ['article' => 'id']]);
+Route::resource('/admin/article', AdminArticleController::class);
 
 // Route::get('/article/{slug?}', function (string $slug = "") {
 //    if (is_numeric($slug)) {

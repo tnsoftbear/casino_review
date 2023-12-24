@@ -38,14 +38,16 @@ class CasinoController extends Controller
      */
     public function create()
     {
-        $pageTitle = 'Create Casino';
         $description = old('description');
         $name = old('name');
-        $rubric_id = old('rubric_id');
+        $pageTitle = 'Create Casino';
         $site_url = old('site_url');
-        $action = route('casino.store');
         return view('admin.casino.create', compact(
-            'pageTitle', 'action', 'name', 'rubric_id', 'site_url', 'description'));
+            'description',
+            'name', 
+            'pageTitle', 
+            'site_url', 
+        ));
     }
     
     /**
@@ -54,11 +56,8 @@ class CasinoController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate($this->getValidationRules($request));
-        Casino::create($validatedData);
-        if ($request->save === 'save_and_new') {
-            return redirect()->route('casino.create');
-        }
-        return redirect()->route('casino.index');
+        $casino = Casino::create($validatedData);
+        return $this->redirectAfterSave($request, $casino);
     }
 
     /**
@@ -76,12 +75,16 @@ class CasinoController extends Controller
     {
         $pageTitle = 'Edit Casino';
         $casino = Casino::find($id);
-        $description = old('description') ?? $casino->description;
-        $name = old('name') ?? $casino->name;
-        $rubric_id = old('rubric_id') ?? $casino->rubric_id;
-        $site_url = old('site_url') ?? $casino->site_url;
+        $description = old('description', $casino->description);
+        $name = old('name', $casino->name);
+        $site_url = old('site_url', $casino->site_url);
         return view('admin.casino.edit', compact(
-            'pageTitle', 'id', 'rubric_id', 'name', 'site_url', 'description'));
+            'description',
+            'id', 
+            'name',
+            'pageTitle',
+            'site_url',
+        ));
     }
 
     /**
@@ -92,11 +95,7 @@ class CasinoController extends Controller
         $validatedData = $request->validate($this->getValidationRules($request, (int)$id));
         $casino = Casino::find($id);
         $casino->update($validatedData);
-        if ($request->save === 'save_and_new') {
-            return redirect()->route('casino.create');
-        }
-
-        return redirect()->route('casino.index');
+        return $this->redirectAfterSave($request, $casino);
     }
 
     /**
@@ -130,5 +129,15 @@ class CasinoController extends Controller
             'description' => '',
         ];
         return $validationRules;
+    }
+
+    protected function redirectAfterSave(Request $request, Casino $casino) {
+        if ($request->save === 'save_and_new') {
+            return redirect()->route('casino.create');
+        }
+        if ($request->save == 'save_and_exit') {
+            return redirect()->route('casino.index');
+        }
+        return redirect()->route('casino.edit', ['id' => $casino->id]);
     }
 }
