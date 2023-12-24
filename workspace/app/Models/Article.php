@@ -24,6 +24,9 @@ class Article extends Model
             if ($article->published_at === "") {
                 $article->published_at = null;
             }
+            if (empty($article->rubric_id)) {
+                $article->rubric_id = 0;
+            }
         });
     }
 }

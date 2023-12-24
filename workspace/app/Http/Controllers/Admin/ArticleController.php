@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Article;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Domain\Author\Load\AuthorLoader;
 use App\Http\Requests\Admin\Article\StoreArticleRequest;
 use App\Http\Requests\Admin\Article\UpdateArticleRequest;
-use App\Models\Article;
-use Illuminate\Http\Request;
 
 /**
  * TODO:
@@ -29,28 +31,10 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $authorUsers = $this->loadAuthorUsers();
-        $authorUserId = old('author_user_id');
-        $content = old('content');
-        $name = old('name');
-        $pageTitle = 'Create Article';
-        $publishedAt = old('published_at');
-        $rubricId = old('rubric_id');
-        $slug = old('slug');
-        $teaser = old('teaser');
-        $article = new Article;
-        return view('admin.article.create', compact(
-            'article',
-            'authorUsers',
-            'authorUserId', 
-            'content', 
-            'name', 
-            'pageTitle',
-            'publishedAt',
-            'rubricId', 
-            'slug',
-            'teaser', 
-        ));
+        return view('admin.article.create')
+            ->with('pageTitle', 'Create Article')
+            ->with('authorUsers', $this->loadAuthorUsers())
+            ->with('article', new Article);
     }
 
     /**
@@ -76,27 +60,11 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $authorUsers = $this->loadAuthorUsers();
-        $authorUserId = old('author_user_id', $article->author_user_id);
-        $content = old('content', $article->content);
-        $name = old('name', $article->name);
-        $pageTitle = 'Edit Article';
-        $publishedAt = old('published_at', $article->published_at);
-        $rubricId = old('rubric_id', $article->rubric_id);
-        $slug = old('slug', $article->slug);
-        $teaser = old('teaser', $article->teaser);
-        return view('admin.article.edit', compact(
-            'article',
-            'authorUsers',
-            'authorUserId', 
-            'content', 
-            'name', 
-            'pageTitle',
-            'publishedAt',
-            'rubricId', 
-            'slug',
-            'teaser', 
-        ));
+        session()->flash('slug', "123123");
+        return view('admin.article.edit')
+            ->with('article', $article)
+            ->with('authorUsers', $this->loadAuthorUsers())
+            ->with('pageTitle', 'Edit Article');
     }
 
     /**
@@ -130,7 +98,7 @@ class ArticleController extends Controller
     }
 
     protected function loadAuthorUsers() {
-        $authorUsers = [];
+        $authorUsers = AuthorLoader::load();
         return $authorUsers;
     }
 }

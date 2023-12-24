@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('article', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('author_user_id')->nullable();
-            $table->foreign('author_user_id')
-                ->references('id')
-                ->on('users');
+            // $table->foreign('author_user_id')
+            //     ->references('id')
+            //     ->on('users');
             $table->unsignedInteger('rubric_id');
             $table->string('name');
             $table->string('slug');

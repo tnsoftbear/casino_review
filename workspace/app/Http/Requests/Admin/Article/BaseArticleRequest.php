@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Admin\Article;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class BaseArticleRequest extends FormRequest
 {
@@ -41,5 +43,23 @@ class BaseArticleRequest extends FormRequest
             'teaser' => '',
             'published_at' => 'nullable|date',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(['slug' => $this->makeSlug()]);
+    }
+
+    protected function failedValidation(Validator $validator) {
+        $this->session()->flash('failed_slug', $this->makeSlug());
+        parent::failedValidation($validator);
+    }
+
+    private function makeSlug() {
+        $slug = $this->input('slug');
+        if (empty($slug)) {
+            $slug = Str::slug($this->input('name'));
+        }
+        return $slug;
     }
 }

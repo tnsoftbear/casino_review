@@ -6,7 +6,7 @@
 
 <div class="mb-3">
     <label for="slug" class="form-label">Slug</label>
-    <input type="text" name="slug" id="slug" value="{!! old('slug', $article->slug) !!}" class="form-control">
+    <input type="text" name="slug" id="slug" value="{!! old('slug') ?: session('failed_slug') ?: $article->slug !!}" class="form-control">
     @error('slug') <div class="alert alert-danger">{{ $message }}</div> @enderror
 </div>
 
@@ -16,7 +16,6 @@
         @foreach(config('article.rubric') as $id => $name)
             <option value="{{ $id }}" @if($id == old('rubric_id', $article->rubric_id)) selected @endif>{{ $name }}</option>
         @endforeach
-        {{-- <option value="100">AAA</option> --}}
     </select>
     @error('rubric_id') <div class="alert alert-danger">{{ $message }}</div> @enderror
 </div>
@@ -25,7 +24,7 @@
     <label for="author_user_id" class="form-label">Author</label>
     <select name="author_user_id" id="author_user_id" class="form-select" @error('author_user_id') is-invalid @enderror>
         @foreach($authorUsers as $userId => $name)
-            <option value="{{ $userId }}" @if($userId == old('author_user_id', $authorUserId)) selected @endif>{{ $name }}</option>
+            <option value="{{ $userId }}" @if($userId == old('author_user_id', $article->author_user_id)) selected @endif>{{ $name }}</option>
         @endforeach
         {{-- <option value="100">AAA</option> --}}
     </select>
@@ -46,6 +45,6 @@
 
 <div class="mb-3">
     <label for="teaser" class="form-label">Teaser</label>
-    <textarea name="teaser" id="teaser" class="form-control" rows="3">@if($teaser) {!!old('teaser', $article->teaser)!!} @endif</textarea>
+    <textarea name="teaser" id="teaser" class="form-control" rows="3">{!!old('teaser', $article->teaser)!!}</textarea>
     @error('teaser') <div class="alert alert-danger">{{ $message }}</div> @enderror
 </div>
