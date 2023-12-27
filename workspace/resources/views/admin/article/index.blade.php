@@ -21,7 +21,7 @@
                     <td>{{ $article->name }}</td>
                     <td>{{ config('article.rubric')[(int)$article->rubric_id] }}</td>
                     <td>
-                        {{ $article->published_at }}
+                        {{ $article->publish_at }}
                     </td>
                     <td>
                         <div class="row">

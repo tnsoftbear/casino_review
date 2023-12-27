@@ -32,9 +32,9 @@
 </div>
 
 <div class="mb-3">
-    <label for="published_at" class="form-label">Publish Date</label>
-    <input type="datetime-local" name="published_at" id="published_at" value="{!! old('published_at', $article->published_at) !!}" class="form-control">
-    @error('published_at') <div class="alert alert-danger">{{ $message }}</div> @enderror
+    <label for="publish_at" class="form-label">Publish Date</label>
+    <input type="datetime-local" name="publish_at" id="publish_at" value="{!! old('publish_at', $article->publish_at) !!}" class="form-control">
+    @error('publish_at') <div class="alert alert-danger">{{ $message }}</div> @enderror
 </div>
 
 <div class="mb-3">

@@ -41,7 +41,7 @@ class BaseArticleRequest extends FormRequest
             'rubric_id' => Rule::in(array_keys(config('article.rubric'))),
             'content' => '',
             'teaser' => '',
-            'published_at' => 'nullable|date',
+            'publish_at' => 'nullable|date',
         ];
     }
 

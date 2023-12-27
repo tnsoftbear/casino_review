@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Article;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domain\Author\Load\AuthorLoader;
@@ -12,11 +11,13 @@ use App\Http\Requests\Admin\Article\UpdateArticleRequest;
 
 /**
  * TODO:
- * published_at - convert to UTC on save, convert to local TZ on display
+ * publish_at - convert to UTC on save, convert to local TZ on display
  */
 
 class ArticleController extends Controller
 {
+    public function __construct(private AuthorLoader $authorLoader) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +34,7 @@ class ArticleController extends Controller
     {
         return view('admin.article.create')
             ->with('pageTitle', 'Create Article')
-            ->with('authorUsers', $this->loadAuthorUsers())
+            ->with('authorUsers', $this->authorLoader->load())
             ->with('article', new Article);
     }
 
@@ -63,7 +64,7 @@ class ArticleController extends Controller
         session()->flash('slug', "123123");
         return view('admin.article.edit')
             ->with('article', $article)
-            ->with('authorUsers', $this->loadAuthorUsers())
+            ->with('authorUsers', $this->authorLoader->load())
             ->with('pageTitle', 'Edit Article');
     }
 
@@ -95,10 +96,5 @@ class ArticleController extends Controller
             return redirect()->route('article.index');
         }
         return redirect()->route('article.edit', ['article' => $article->id]);
-    }
-
-    protected function loadAuthorUsers() {
-        $authorUsers = AuthorLoader::load();
-        return $authorUsers;
     }
 }

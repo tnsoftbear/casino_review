@@ -11,17 +11,17 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-<?php
+@php
 [$startsWith,] = explode('.', Route::currentRouteName());
-?>
+@endphp
           @foreach(config('admin.menu') as $id => [$name, $route])
-<?php
+@php
 $active = $ariaCurrent = '';
 if (str_starts_with($route, $startsWith)) {
     $active = 'active';
     $ariaCurrent = 'aria-current="page"';
 }
-?>
+@endphp
           <li class="nav-item">
             <a class="nav-link {{ $active }}" {!! $ariaCurrent !!}
                 href="{{ route($route) }}">{{ $name }}</a>

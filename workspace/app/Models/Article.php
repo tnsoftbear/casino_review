@@ -21,8 +21,8 @@ class Article extends Model
     protected static function booted(): void
     {
         static::saving(function (Article $article) {
-            if ($article->published_at === "") {
-                $article->published_at = null;
+            if ($article->publish_at === "") {
+                $article->publish_at = null;
             }
             if (empty($article->rubric_id)) {
                 $article->rubric_id = 0;

@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('article', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('author_user_id')->nullable();
-            // $table->foreign('author_user_id')
-            //     ->references('id')
-            //     ->on('users');
+            $table->foreign('author_user_id')
+                ->references('id')
+                ->on('users');
             $table->unsignedInteger('rubric_id');
             $table->string('name');
             $table->string('slug');
             $table->text('content');
             $table->text('teaser');
-            $table->timestamp('published_at')->nullable();
-            $table->timestamp('unpublished_at')->nullable();
+            $table->timestamp('publish_at')->nullable();
+            $table->timestamp('unpublish_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

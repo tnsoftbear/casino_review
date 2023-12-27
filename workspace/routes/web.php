@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\CasinoController as AdminCasinoController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CasinoController;
+use App\Http\Middleware\CheckAdminPrivilege;
 
 \Illuminate\Support\Facades\URL::forceScheme('https');
 
@@ -16,18 +17,11 @@ Route::get('/', function () {
 Route::get('/article/{slug?}', [ArticleController::class, 'index']);
 Route::get('/casino', [CasinoController::class, 'list']);
 
-//Route::redirect('/admin/article', '/admin/article/list', 301);
-//Route::get('/admin/article/list', [AdminArticleController::class, 'list']);
-Route::resource('/admin/casino', AdminCasinoController::class, ['parameters' => ['casino' => 'id']]);
-//Route::resource('/admin/article', AdminArticleController::class, ['parameters' => ['article' => 'id']]);
-Route::resource('/admin/article', AdminArticleController::class);
-
-// Route::get('/article/{slug?}', function (string $slug = "") {
-//    if (is_numeric($slug)) {
-//        return "Article id: $slug";
-//    }
-//    return "Article slug: $slug"; 
-// })->where(['slug' => '[A-Za-z0-9]+']);
+Route::group(['middleware' => CheckAdminPrivilege::class], function () {
+    Route::resource('/admin/casino', AdminCasinoController::class, ['parameters' => ['casino' => 'id']]);
+    Route::resource('/admin/article', AdminArticleController::class);
+    Route::resource('/admin/user', \App\Http\Controllers\Admin\UserController::class);
+});
 
 Route::fallback(function () {
     abort(404, 'Oops, page not found.');
