@@ -5,6 +5,13 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+function ll($var) {
+    if (is_array($var)) {
+        $var = json_encode($var, JSON_PRETTY_PRINT);
+    }
+    error_log($var);
+}
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
@@ -48,8 +55,9 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
-$response = $kernel->handle(
-    $request = Request::capture()
-)->send();
+$request = Request::capture();
+ll('index.php: casinoreview_session: ' . $request->cookies->get('casinoreview_session'));
+ll($_SERVER);
+$response = $kernel->handle($request)->send();
 
 $kernel->terminate($request, $response);

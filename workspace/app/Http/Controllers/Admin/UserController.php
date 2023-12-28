@@ -3,14 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\UserPersonal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Http\Requests\Admin\User\UpdateUserRequest;
-use App\Models\UserPersonal;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        // if (
+        //     !Auth::check()
+        //     || !Auth::user()->is_admin
+        // ) {
+        //     redirect()->route('admin.auth.index');
+        // }
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,8 +39,7 @@ class UserController extends Controller
         return view('admin.user.create')
             ->with('pageTitle', 'Create User')
             ->with('user', new User)
-            ->with('userPersonal', new UserPersonal)
-        ;
+            ->with('userPersonal', new UserPersonal);
     }
 
     /**
@@ -60,8 +70,7 @@ class UserController extends Controller
         return view('admin.user.edit')
             ->with('user', $user)
             ->with('userPersonal', $user->userPersonal)
-            ->with('pageTitle', 'Edit Use')
-        ;
+            ->with('pageTitle', 'Edit Use');
     }
 
     /**
@@ -88,7 +97,8 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
-    protected function redirectAfterSave(Request $request, User $user) {
+    protected function redirectAfterSave(Request $request, User $user)
+    {
         if ($request->save === 'save_and_new') {
             return redirect()->route('user.create');
         }

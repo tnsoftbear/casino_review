@@ -1,6 +1,6 @@
 @include('admin.layout.header')
 
-@include('admin.layout.errors_on_top')
+@include('admin.layout.alerts')
 
 @yield('content')
     

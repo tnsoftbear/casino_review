@@ -4,9 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAdminPrivilege
+class CheckAuth
 {
     /**
      * Handle an incoming request.
@@ -15,6 +16,13 @@ class CheckAdminPrivilege
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if (Auth::check()) {
+            return $next($request);
+        }
+
+        //abort(404);
+        return redirect()->route('admin.auth.index')->withErrors([
+            'login' => 'Please login first.',
+        ]);
     }
 }

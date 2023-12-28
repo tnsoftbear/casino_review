@@ -13,8 +13,12 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 @php
 [$startsWith,] = explode('.', Route::currentRouteName());
+$menu = config('admin.menu');
+if (!auth()->user()->is_admin) {
+    unset($menu['user'], $menu['casino']);
+}
 @endphp
-          @foreach(config('admin.menu') as $id => [$name, $route])
+          @foreach($menu as $id => [$name, $route])
 @php
 $active = $ariaCurrent = '';
 if (str_starts_with($route, $startsWith)) {

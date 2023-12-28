@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Casino;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CasinoController extends Controller
 {
     public function __construct(Request $request) {
-        //session()->invalidate();
-        //session()->regenerate();
-        echo "key2: " . session()->get("key2");
-        session()->put("key2", "value2");
-        if ($request->hasSession()) {
-            $request->session()->put("key1", "value1");
-        } else {
-            echo "no session in request";
-        }
+        // ll(is_null(Auth::user()));
+        // if (
+        //     !Auth::check()
+        //     || !Auth::user()->is_admin
+        // ) {
+        //     redirect()->route('admin.auth.index');
+        // }
+
+        // if (!auth()->user()->is_admin) {
+        //     redirect()->route('admin.auth.index');
+        // }
     }
 
     /**
