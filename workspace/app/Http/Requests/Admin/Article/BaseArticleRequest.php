@@ -42,6 +42,8 @@ class BaseArticleRequest extends FormRequest
             'content' => '',
             'teaser' => '',
             'publish_at' => 'nullable|date',
+            'unpublish_at' => 'nullable|date',
+            'tz_offset' => 'integer',
         ];
     }
 

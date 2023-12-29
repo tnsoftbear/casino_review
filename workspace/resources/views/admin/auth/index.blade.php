@@ -17,6 +17,11 @@
                     <input type="password" class="form-control" name="password" placeholder="Password">
                 </div>
                 <button type="submit" class="btn btn-primary mb-3">Login</button>
+
+                <input type="hidden" name="tz_offset" id="tz_offset">
+                <script>
+                    document.getElementById('tz_offset').value = new Date().getTimezoneOffset();
+                </script>
             </form>
             
         </div>

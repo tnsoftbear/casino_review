@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Domain\Date\DateTzConverter;
 use App\Http\Controllers\Controller;
 use App\Domain\Author\Load\AuthorLoader;
 use App\Http\Requests\Admin\Article\StoreArticleRequest;
 use App\Http\Requests\Admin\Article\UpdateArticleRequest;
-
-/**
- * TODO:
- * publish_at - convert to UTC on save, convert to local TZ on display
- */
+use App\Domain\Constants\DateConstants;
 
 class ArticleController extends Controller
 {
@@ -23,7 +20,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::whereNull('deleted_at')->get();
+        $articles = Article::whereNull('deleted_at')->get()->all();
+        $articles = array_map(fn($article) => $this->prepareForRender($article), $articles);
         return view('admin.article.index', compact('articles'));
     }
 
@@ -33,11 +31,11 @@ class ArticleController extends Controller
     public function create()
     {
         $article = new Article;
-        $article->publish_at = now()->format('Y-m-d H:i:s');
+        $article->publish_at = now()->format(DateConstants::DT_ZERO_SEC_ISO_FORMAT);
         return view('admin.article.create')
             ->with('pageTitle', 'Create Article')
             ->with('authorUsers', $this->authorLoader->load())
-            ->with('article', $article);
+            ->with('article', $this->prepareForRender($article));
     }
 
     /**
@@ -46,6 +44,7 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         $validatedData = $request->validationData();
+        $validatedData = $this->prepareForSave($request, $validatedData);
         $article = Article::create($validatedData);
         return $this->redirectAfterSave($request, $article);
     }
@@ -63,9 +62,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        session()->flash('slug', "123123");
         return view('admin.article.edit')
-            ->with('article', $article)
+            ->with('article', $this->prepareForRender($article))
             ->with('authorUsers', $this->authorLoader->load())
             ->with('pageTitle', 'Edit Article');
     }
@@ -76,6 +74,7 @@ class ArticleController extends Controller
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $validatedData = $request->validationData();
+        $validatedData = $this->prepareForSave($request, $validatedData);
         $article->update($validatedData);
         return $this->redirectAfterSave($request, $article);
     }
@@ -98,5 +97,21 @@ class ArticleController extends Controller
             return redirect()->route('article.index');
         }
         return redirect()->route('article.edit', ['article' => $article->id]);
+    }
+
+    protected function prepareForSave(Request $request, array $savingData): array 
+    {
+        $savingData = DateTzConverter::convertAndUpdateArrayOfDateIsoToUtcByTzOffset(
+            $savingData,
+            ['publish_at', 'unpublish_at'],
+            (int)$request->session()->get('tz_offset')
+        );
+        return $savingData;
+    }
+
+    protected function prepareForRender(Article $article): Article {
+        $article->publish_at = DateTzConverter::convertDateIsoUtcByTzOffset($article->publish_at, (int)session()->get('tz_offset'));
+        $article->unpublish_at = DateTzConverter::convertDateIsoUtcByTzOffset($article->unpublish_at, (int)session()->get('tz_offset'));
+        return $article;
     }
 }

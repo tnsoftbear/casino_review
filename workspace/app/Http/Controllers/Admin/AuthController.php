@@ -26,9 +26,10 @@ class AuthController extends Controller
         $credentials = $request->validate($validationRules);
  
         if (auth()->attempt($credentials)) {
-            //session()->regenerate();
-            //return redirect()->route('article.index');
-            return redirect()->intended()->with('success', 'You have been logged in!'); // TODO route('article.index');
+            $request->session()->regenerate();
+            $request->session()->put('tz_offset', $request->input('tz_offset'));
+            return redirect()->route('article.index');
+            //return redirect()->intended()->with('success', 'You have been logged in!'); // TODO route('article.index');
         }
  
         return back()->withErrors([
