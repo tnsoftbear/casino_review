@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 
 class ArticleController extends Controller
 {
-    public function index(string $slug = "")
+    public function feed()
     {
         $now = Carbon::now();
 
@@ -53,7 +53,7 @@ class ArticleController extends Controller
            ]; 
         }, $articles);
 
-        return view('public.article.index')
+        return view('public.article.feed')
             ->with('articles', $a);
     }
 }

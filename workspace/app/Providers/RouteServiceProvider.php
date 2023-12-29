@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        RateLimiter::for('global', function (Request $request) {
+            return Limit::perMinute(env('RATE_LIMIT_ATTEMPT_PER_MIN'))
+                ->by($request->user()?->id ?: $request->ip())
+                ->response(function (Request $request, array $headers) {
+                    return response(
+                        'You have exceeded the rate limit.', Response::HTTP_TOO_MANY_REQUESTS, $headers);
+                });
+        });
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });

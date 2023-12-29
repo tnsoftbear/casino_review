@@ -12,11 +12,10 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 
 \Illuminate\Support\Facades\URL::forceScheme('https');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ArticleController::class, 'feed']);
+Route::get('/article/feed', [ArticleController::class, 'feed'])->name('public.article.feed');
+Route::get('/article/{slug?}', [ArticleController::class, 'index'])->name('public.article.show');
 
-Route::get('/article/{slug?}', [ArticleController::class, 'index']);
 Route::get('/casino', [CasinoController::class, 'list']);
 
 Route::get('/admin', [AdminAuthController::class, 'index']);
