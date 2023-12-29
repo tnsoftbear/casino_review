@@ -17,6 +17,7 @@ $menu = config('admin.menu');
 if (!auth()->user()->is_admin) {
     unset($menu['user'], $menu['casino']);
 }
+$menu['logout'][0] = $menu['logout'][0] . ' (' . auth()->user()->userPersonal->name() . ')';
 @endphp
           @foreach($menu as $id => [$name, $route])
 @php

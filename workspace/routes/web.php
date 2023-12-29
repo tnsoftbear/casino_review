@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin as Admin;
 // use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 // use App\Http\Controllers\Admin\CasinoController as AdminCasinoController;
-use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Public\ArticleController;
 use App\Http\Controllers\CasinoController;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;

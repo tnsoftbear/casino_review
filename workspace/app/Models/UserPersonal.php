@@ -18,4 +18,13 @@ class UserPersonal extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function name(): string
+    {
+        $name = trim($this->first_name . ' ' . $this->last_name);
+        if (empty($name)) {
+            $name = $this->user->email;
+        }
+        return $name;
+    }
 }

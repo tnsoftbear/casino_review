@@ -32,10 +32,12 @@ class ArticleController extends Controller
      */
     public function create()
     {
+        $article = new Article;
+        $article->publish_at = now()->format('Y-m-d H:i:s');
         return view('admin.article.create')
             ->with('pageTitle', 'Create Article')
             ->with('authorUsers', $this->authorLoader->load())
-            ->with('article', new Article);
+            ->with('article', $article);
     }
 
     /**

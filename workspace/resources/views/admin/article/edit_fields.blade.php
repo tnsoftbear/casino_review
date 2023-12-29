@@ -38,6 +38,12 @@
 </div>
 
 <div class="mb-3">
+    <label for="unpublish_at" class="form-label">Unpublish Date</label>
+    <input type="datetime-local" name="unpublish_at" id="unpublish_at" value="{!! old('unpublish_at', $article->unpublish_at) !!}" class="form-control">
+    @error('unpublish_at') <div class="alert alert-danger">{{ $message }}</div> @enderror
+</div>
+
+<div class="mb-3">
     <label for="content" class="form-label">Content</label>
     <textarea name="content" id="content" class="form-control" rows="10">{!!old('content', $article->content)!!}</textarea>
     @error('content') <div class="alert alert-danger">{{ $message }}</div> @enderror
