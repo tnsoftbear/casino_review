@@ -15,6 +15,10 @@ services:
       - '80:80'
       - 443:443
     restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./../../workspace
+        target: /workspace
 
   app:
     build:

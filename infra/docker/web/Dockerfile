@@ -1,5 +1,7 @@
 FROM nginx:latest AS nginx
 
+WORKDIR /workspace
+
 RUN apt-get update && \
     apt-get install -y vim procps lsof && \
     rm -f /etc/nginx/conf.d/default.conf
