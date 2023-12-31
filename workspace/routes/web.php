@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 
 \Illuminate\Support\Facades\URL::forceScheme('https');
 
-Route::get('/', [ArticleController::class, 'feed']);
+Route::get('/', [ArticleController::class, 'feed'])->name('/');
 Route::get('/article/feed', [ArticleController::class, 'feed'])->name('public.article.feed');
 Route::get('/article/{slug?}', [ArticleController::class, 'index'])->name('public.article.show');
 

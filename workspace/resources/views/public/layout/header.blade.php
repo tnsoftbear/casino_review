@@ -17,8 +17,8 @@
 <body>
 
 <!-- Заголовок -->
-<header class="bg-dark text-white text-center py-3">
-    <h1>Заголовок вашего сайта</h1>
+<header class="bg-dark text-white text-center">
+    @include('public.layout.partials.navbar')
 </header>
 
 <!-- Контент -->

@@ -21,6 +21,7 @@ convert "$original_image" -resize 114x114 "${output_dir}/apple-touch-icon_114x11
 convert "$original_image" -resize 76x76 "${output_dir}/apple-touch-icon_76x76.png"
 convert "$original_image" -resize 72x72 "${output_dir}/apple-touch-icon_72x72.png"
 convert "$original_image" -resize 60x60 "${output_dir}/apple-touch-icon_60x60.png"
+convert "$original_image" -resize 57x57 "${output_dir}/apple-touch-icon_57x57.png"
 
 convert "$original_image" -resize 192x192 "${output_dir}/favicon_192x192.png"
 convert "$original_image" -resize 96x96 "${output_dir}/favicon_96x96.png"
