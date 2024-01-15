@@ -43,9 +43,10 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        $validatedData = $request->validationData();
+        $validatedData = $request->validated();
         $validatedData = $this->prepareForSave($request, $validatedData);
         $article = Article::create($validatedData);
+        session()->flash('success', 'Article created');
         return $this->redirectAfterSave($request, $article);
     }
 
@@ -73,9 +74,11 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        $validatedData = $request->validationData();
+        $validatedData = $request->validated();
+        //unset($validatedData['_token'], $validatedData['_method'], $validatedData['save']);
         $validatedData = $this->prepareForSave($request, $validatedData);
         $article->update($validatedData);
+        session()->flash('success', 'Article updated');
         return $this->redirectAfterSave($request, $article);
     }
 

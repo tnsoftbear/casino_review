@@ -39,11 +39,15 @@ class BaseArticleRequest extends FormRequest
                 }),
             ],
             'rubric_id' => Rule::in(array_keys(config('article.rubric'))),
+            'author_user_id' => '',
             'content' => '',
             'teaser' => '',
             'publish_at' => 'nullable|date',
             'unpublish_at' => 'nullable|date',
             'tz_offset' => 'integer',
+            'meta_title' => '',
+            'meta_description' => '',
+            'meta_keywords' => '',
         ];
     }
 

@@ -9,16 +9,39 @@
     <table class="table article-table">
         <thead>
             <tr>
-                <th class="col">Name</th>
+                <th>Article</th>
                 <th>Rubric</th>
                 <th>Publish Date</th>
-                <th class="col-auto">Actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($articles as $article)
                 <tr>
-                    <td>{{ $article->name }}</td>
+                    <td>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-1">
+                                    <strong>Name</strong>
+                                </div>
+                                <div class="col-11 fs-5">
+                                    <div class="d-flex align-items-start">
+                                        {{ $article->name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                    <strong>Slug</strong>
+                                </div>
+                                <div class="col-11">
+                                    <div class="d-flex align-items-start">
+                                        <i>{{ $article->slug }}</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     <td>{{ config('article.rubric')[(int)$article->rubric_id] }}</td>
                     <td>
                         {{ $article->publish_at }}

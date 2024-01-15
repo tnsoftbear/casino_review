@@ -9,18 +9,21 @@
     <table class="table user-table">
         <thead>
             <tr>
-                <th class="col">Login</th>
-                <th>Admin</th>
-                <th>Author</th>
-                <th class="col-auto">Actions</th>
+                <th>Role</th>
+                <th>Username</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($users as $user)
                 <tr>
-                    <td>{{ $user->login }}</td>
-                    <td>{{ $user->is_admin ? 'Yes' : 'No' }}</td>
-                    <td>{{ $user->is_author ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <span class="badge @if ($user->is_author) {{ 'bg-primary' }} @else {{ 'bg-background' }} @endif rounded-pill mr-2" title="Author">&nbsp;</span>
+                        <span class="badge @if ($user->is_admin) {{ 'bg-danger' }} @else {{ 'bg-background' }} @endif rounded-pill mr-2" title="Admin">&nbsp;</span>
+                    </td>
+                    <td>
+                        {{ $user->login }}
+                    </td>
                     <td>
                         <div class="row">
                             <div class="col-md-4">

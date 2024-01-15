@@ -15,18 +15,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const FILLABLE = ['login', 'email', 'password', 'is_admin', 'is_author'];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'login',
-        'email',
-        'password',
-        'is_admin',
-        'is_author',
-    ];
+    protected $fillable = self::FILLABLE;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -48,6 +44,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public static function filterInputs(array $inputs)
+    {
+        return array_intersect_key($inputs, array_flip(self::FILLABLE));
+    }
+
+    public function getFillable(): array {
+        return $this->fillable;
+    }
+
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
@@ -57,4 +62,17 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserPersonal::class);
     }
+
+    // public static function create(array $attributes = [], array $options = []): User {
+    //     $user = parent::create(self::filterInputs($attributes), $options);
+    //     $attributes['user_id'] = $user->id;
+    //     //$user->userPersonal->user_id = $user->id;
+    //     $user->userPersonal->create($attributes, $options);
+    //     return $user;
+    // }
+
+    // public function update(array $attributes = [], array $options = []) {
+    //     parent::update(self:: filterInputs($attributes), $options);
+    //     $this->userPersonal->update($attributes, $options);
+    // }
 }

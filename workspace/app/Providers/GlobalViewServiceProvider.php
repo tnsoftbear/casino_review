@@ -19,7 +19,5 @@ class GlobalViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->share('siteTitle', __('global.site_title'));
-        view()->share('metaDescription', __('global.site_description'));
     }
 }

@@ -14,8 +14,6 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 
 Route::get('/', [ArticleController::class, 'feed'])->name('/');
 Route::get('/article/feed', [ArticleController::class, 'feed'])->name('public.article.feed');
-Route::get('/article/{slug?}', [ArticleController::class, 'index'])->name('public.article.show');
-
 Route::get('/casino', [CasinoController::class, 'list']);
 
 Route::get('/admin', [AdminAuthController::class, 'index']);
@@ -30,6 +28,8 @@ Route::group(['middleware' => CheckAuth::class/*, 'prefix' => 'admin' , 'namespa
     Route::resource('/admin/user', \App\Http\Controllers\Admin\UserController::class);
     Route::resource('/admin/article', \App\Http\Controllers\Admin\ArticleController::class);
 });
+
+Route::get('/{slug?}', [ArticleController::class, 'show'])->name('public.article.show');
 
 Route::fallback(function () {
     abort(404, 'Oops, page not found.');

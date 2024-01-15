@@ -31,6 +31,10 @@ class BaseUserRequest extends FormRequest
                 'max:255',
                 'email',
             ],
+            'is_admin' => ['boolean'],
+            'is_author' => ['boolean'],
+            'first_name' => [],
+            'last_name' => [],
         ];
     }
 }

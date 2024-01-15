@@ -22,7 +22,7 @@ class UserController extends Controller
         // }
     }
 
-    /**
+    /**s
      * Display a listing of the resource.
      */
     public function index()
@@ -47,10 +47,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $validatedData = $request->validationData();
-        $user = User::create($validatedData);
+        $validatedData = $request->validated();
+        $user = User::create(User::filterInputs($validatedData));
         $validatedData['user_id'] = $user->id;
-        UserPersonal::create($validatedData);
+        UserPersonal::create(UserPersonal::filterInputs($validatedData));
         return $this->redirectAfterSave($request, $user);
     }
 
@@ -78,12 +78,14 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $validatedData = $request->validationData();
+        $validatedData = $request->validated();
         if (empty($validatedData['password'])) {
             unset($validatedData['password']);
         }
-        $user->update($validatedData);
-        $user->userPersonal->update($validatedData);
+        $validatedData['is_admin'] ??= false;
+        $validatedData['is_author'] ??= false;
+        $user->update(User::filterInputs($validatedData));
+        $user->userPersonal->update(UserPersonal::filterInputs($validatedData));
         return $this->redirectAfterSave($request, $user);
     }
 
