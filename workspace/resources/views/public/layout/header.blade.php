@@ -22,6 +22,3 @@
     @include('public.layout.partials.navbar')
 </header>
 
-<!-- Контент -->
-<div class="container mt-4">
-    <div class="row">

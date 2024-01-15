@@ -1,5 +1,13 @@
 @include('public.layout.header')
 
-@yield('content')
+<main>
+  <div class="container mt-4">
+    <div class="row">
+        
+        @yield('content')
+
+    </div>
+  </div>
+</main>
     
 @include('public.layout.footer')
