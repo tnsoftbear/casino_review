@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Kernel;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Connection;
@@ -38,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
                     ->channel('telegram')
                     ->debug('whenRequestLifecycleIsLongerThan: ' . request()->url());
             }
-        )
+        );
 
         // if (env('LOG_LEVEL') === 'debug') {
         //     DB::listen(function ($query) {

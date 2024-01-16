@@ -34,10 +34,8 @@ install:
 	@make up
 	docker compose $(cf) exec $(uf) app composer install
 	docker compose $(cf) exec $(uf) app cp .env.example .env
-	docker compose $(cf) exec $(uf) app php artisan key:generate
-	docker compose $(cf) exec $(uf) app php artisan storage:link
 	docker compose $(cf) exec $(uf) app chmod -R 777 storage bootstrap/cache
-	@make fresh
+	docker compose $(cf) exec $(uf) app php artisan app:install
 build:
 	docker compose $(cf) build $(ncf) $(bauser) $(bauid)
 rebuild:
@@ -76,7 +74,5 @@ test:
 	docker compose $(cf) exec $(uf) app php artisan test
 migrate:
 	docker compose $(cf) exec $(uf) app php artisan migrate
-fresh:
-	docker compose $(cf) exec $(uf) app php artisan migrate:fresh --seed
 
 # https://github.com/ucan-lab/docker-laravel/blob/main/Makefile
