@@ -49,7 +49,7 @@
                     <td>
                         <div class="row">
                             <div class="col-md-4">
-                                <a href="{{ route('article.show', ['article' => $article->id]) }}" class="btn btn-info btn-sm" target="_blank">Preview</a>
+                                <a href="{{ route('public.article.show', ['slug' => $article->slug]) }}" class="btn btn-info btn-sm" target="_blank">Preview</a>
                             </div>
                             <div class="col-md-4">
                                 <a href="{{ route('article.edit', ['article' => $article->id]) }}" class="btn btn-warning btn-sm">Edit</a>
