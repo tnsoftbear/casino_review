@@ -29,6 +29,10 @@ ifeq ($(uid),)
 endif
 bauid = --build-arg uid=$(uid)
 
+ifeq ($(dir),)
+	dir = ./bak
+endif
+
 install:
 	@make build
 	@make up
@@ -66,6 +70,13 @@ app:
 	docker compose $(cf) exec $(uf) app bash
 db:
 	docker compose $(cf) exec $(uf) db bash
+db-dump:
+# make db-dump
+# make db-dump dir=./bak	# default
+	./infra/backup/dumpdb.sh $(dir)
+db-restore:
+# make db-restore dump=./bak/casino_review_2024_01_20_20_18_29.tar
+	./infra/backup/restoredb.sh $(dump)
 tinker:
 	docker compose $(cf) exec $(uf) app php artisan tinker
 dump:
