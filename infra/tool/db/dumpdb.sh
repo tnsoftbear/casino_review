@@ -1,4 +1,7 @@
-[[ -n $DEBUG ]] && set -x
+if [[ -n $DEBUG ]]; then
+    set -x
+    PS4=": "
+fi
 
 if [ -n "$1" ]; then
     DIR="${1%/}/"

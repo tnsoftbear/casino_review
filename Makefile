@@ -73,10 +73,10 @@ db:
 db-dump:
 # make db-dump
 # make db-dump dir=./bak	# default
-	./infra/backup/dumpdb.sh $(dir)
+	./infra/tool/db/dumpdb.sh $(dir)
 db-restore:
 # make db-restore dump=./bak/casino_review_2024_01_20_20_18_29.tar
-	./infra/backup/restoredb.sh $(dump)
+	./infra/tool/db/restoredb.sh $(dump)
 tinker:
 	docker compose $(cf) exec $(uf) app php artisan tinker
 dump:
